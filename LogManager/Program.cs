@@ -4,8 +4,16 @@
 
 
 
+
 namespace LogManager
 {
+
+    public class Szurve
+    {
+        public string Bejegyzes { get; set; }
+        public List<Log> SzurtLista { get; set; }
+    }
+
     public class Program
     {
         public static List<Log> logok = new List<Log>();
@@ -16,45 +24,81 @@ namespace LogManager
             Feladat4();
             Feladat5();
             Feladat6();
+            Feladat7();
+
+        }
+
+        private static void Feladat7()
+        {
+            Console.Write("7. Feladat: ");
+            string fajlnev = "errors.txt";
+            var ErrorEsemenyek = logok.Where(l => l.Szint == "ERROR");
+            StreamWriter streamWriter = new StreamWriter(fajlnev);
+            foreach (var item in ErrorEsemenyek)
+            {
+                streamWriter.WriteLine($"{item.Ido} - {item.Szint} - {item.Uzenet}");
+            }
+            streamWriter.Close();
+            Console.Write($"ERROR események mentve: {fajlnev}");
 
         }
 
         private static void Feladat6()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("6. Feladat:Legutóbbi ERROR előtti utolsó SUCCESS:");
+            var legutobbiErrorIndex = logok.IndexOf(logok.LastOrDefault(l => l.Szint == "ERROR"));
+            if (legutobbiErrorIndex != -1)
+            {
+                int i = legutobbiErrorIndex;
+                while (i > -1 && logok[i].Szint != "SUCCESS")
+                {
+                    i--;
+                }
+
+                if (i > -1)
+                {
+                    Console.WriteLine($"\t{logok[i].Ido} - {logok[i].Szint} - {logok[i].Uzenet}");
+                }
+                else
+                {
+                    Console.WriteLine("\tnincs");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\tnincs");
+            }
         }
 
         private static void Feladat5()
         {
             Console.WriteLine("5. Feladat:");
-            LogokSzurese(["Szűrt események (ERROR és WARNING):"], [["ERROR", "WARNING"]]);
+            var leszurtLogok = LogokSzurese(logok, ["ERROR", "WARNING"]);
+            Console.WriteLine($"\tSzűrt események (ERROR és WARNING):");
+            foreach (var log in leszurtLogok)
+            {
+               Console.WriteLine($"\t{log.Ido} - {log.Szint} - {log.Uzenet}");
+            }
+            
         }
 
-        public static void LogokSzurese(string[] bejegyzesek, List<List<string>> szuresFelteltelek)
+        public static List<Log> LogokSzurese(List<Log> bejegyzesek, List<string> szuresFelteltelek)
         {
-            for (int bejIndex = 0; bejIndex < bejegyzesek.Length; bejIndex++)
-            {
-                Console.WriteLine($"\t{bejegyzesek[bejIndex]}");
-                List<Log> szurtLogok = new List<Log>();
-                foreach (var log in logok)
+           List<Log> szurtLista = new List<Log>();
+           foreach (var log in bejegyzesek)
+           {
+                int i = 0;
+                while (i < szuresFelteltelek.Count && szuresFelteltelek[i] != log.Szint)
                 {
-                    int i = 0;
-                    while (i < szuresFelteltelek[bejIndex].Count && szuresFelteltelek[bejIndex][i] != log.Szint)
-                    {
-                        i++;
-                    }
-
-                    if (i < szuresFelteltelek[bejIndex].Count)
-                    {
-                        szurtLogok.Add(log);
-                    }
+                     i++;
                 }
 
-                foreach (var item in szurtLogok)
+                if (i < szuresFelteltelek.Count)
                 {
-                    Console.WriteLine($"\t{item.Ido} - {item.Szint} - {item.Uzenet}");
+                     szurtLista.Add(log);
                 }
-            }
+           }   
+            return szurtLista;
 
         }
 
