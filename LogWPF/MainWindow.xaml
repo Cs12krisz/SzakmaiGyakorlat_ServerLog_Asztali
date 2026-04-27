@@ -5,8 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        Loaded="Window_Loaded">
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="dtgLogs"/>
+        <StackPanel Grid.Column="1">
+            <ComboBox x:Name="cbxSzintek" Width="100" Margin="0 0 0 10"/>
+            <Button x:Name="btnElozoSzint" Width="100" Content="Előző" Margin="0 0 0 10" Click="btnElozoSzint_Click"/>
+            <Button x:Name="btnKovetkezoSzint" Width="100" Content="Következő" Click="btnKovetkezoSzint_Click"/>
+            
+        </StackPanel>
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using LogManager;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +20,26 @@ namespace LogWPF
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Program.Beolvas();
+            dtgLogs.ItemsSource = Program.logok;
+            cbxSzintek.ItemsSource = Program.logok.DistinctBy(l => l.Szint).Select(l => l.Szint);
+            cbxSzintek.SelectedIndex = 0;
+            dtgLogs.SelectedIndex = 0;
+        }
+
+
+        private void btnKovetkezoSzint_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnElozoSzint_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

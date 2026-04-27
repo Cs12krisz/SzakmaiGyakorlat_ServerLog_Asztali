@@ -5,6 +5,10 @@
 
 
 
+
+
+using System.Text.Json;
+
 namespace LogManager
 {
 
@@ -26,6 +30,22 @@ namespace LogManager
             Feladat6();
             Feladat7();
 
+        }
+
+        public static void JsonRead()
+        {
+            string json = File.ReadAllText("log.json");
+            List<Log> log = JsonSerializer.Deserialize<List<Log>>(json);
+        }
+
+        public static void JsonSave()
+        {
+            var options = new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+            File.WriteAllText("savedLog.json", JsonSerializer.Serialize(logok, options));
         }
 
         private static void Feladat7()

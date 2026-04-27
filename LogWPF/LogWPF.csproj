@@ -8,4 +8,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LogManager\LogManager.csproj" />
+  </ItemGroup>
+
 </Project>
